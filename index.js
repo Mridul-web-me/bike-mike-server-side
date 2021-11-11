@@ -22,18 +22,17 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect();
-        const database = client.db('ghuraghuri');
-        const packagesCollection = database.collection('packages');
+        const database = client.db('bikesmikes');
+        const bikesCollection = database.collection('bikes');
         const emailCollection = database.collection('serviceEmail');
 
-
-
         // GET API
-        app.get('/packages', async (req, res) => {
-            const cursor = packagesCollection.find({});
-            const packages = await cursor.toArray();
-            res.send(packages);
+        app.get('/bikes', async (req, res) => {
+            const cursor = bikesCollection.find({});
+            const bikes = await cursor.toArray();
+            res.send(bikes);
         })
+
 
         // GET API
         app.get('/serviceEmail', async (req, res) => {
@@ -44,20 +43,20 @@ async function run() {
 
         // GET SINGLE Package
 
-        app.get('/packages/:id', async (req, res) => {
+        app.get('/bikes/:id', async (req, res) => {
             const id = req.params.id;
-            console.log('getting packages');
+            console.log('getting bikes');
             const query = { _id: ObjectId(id) };
-            const package = await packagesCollection.findOne(query);
-            res.json(package);
+            const bike = await bikesCollection.findOne(query);
+            res.json(bike);
 
         })
 
         // POST API
-        app.post('/packages', async (req, res) => {
+        app.post('/bikes', async (req, res) => {
             const package = req.body;
             console.log('hit the api', package);
-            const result = await packagesCollection.insertOne(package);
+            const result = await bikesCollection.insertOne(package);
             console.log(result);
             res.json(result)
         })
