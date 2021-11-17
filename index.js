@@ -26,6 +26,7 @@ async function run() {
         const bikesCollection = database.collection('bikes');
         const emailCollection = database.collection('serviceEmail');
         const usersCollection = database.collection('email');
+        const reviewCollection = database.collection('review');
 
         // GET API
         app.get('/bikes', async (req, res) => {
@@ -40,6 +41,12 @@ async function run() {
             const cursor = emailCollection.find({});
             const serviceEmail = await cursor.toArray();
             res.send(serviceEmail);
+        })
+        // GET API
+        app.get('/review', async (req, res) => {
+            const cursor = reviewCollection.find({});
+            const review = await cursor.toArray();
+            res.send(review);
         })
 
         // GET SINGLE Package
@@ -67,6 +74,15 @@ async function run() {
             const email = req.body;
             console.log('hit the api', email);
             const result = await emailCollection.insertOne(email);
+            console.log(result);
+            res.json(result)
+        })
+
+        // POST API
+        app.post('/review', async (req, res) => {
+            const review = req.body;
+            console.log('hit the api', review);
+            const result = await reviewCollection.insertOne(review);
             console.log(result);
             res.json(result)
         })
