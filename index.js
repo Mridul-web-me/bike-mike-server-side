@@ -49,7 +49,7 @@ async function run() {
             res.send(review);
         })
 
-        // GET SINGLE Package
+        // GET SINGLE Bike
 
         app.get('/bikes/:id', async (req, res) => {
             const id = req.params.id;
@@ -62,9 +62,9 @@ async function run() {
 
         // POST API
         app.post('/bikes', async (req, res) => {
-            const package = req.body;
-            console.log('hit the api', package);
-            const result = await bikesCollection.insertOne(package);
+            const bike = req.body;
+            console.log('hit the api', bike);
+            const result = await bikesCollection.insertOne(bike);
             console.log(result);
             res.json(result)
         })
