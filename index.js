@@ -49,6 +49,16 @@ async function run() {
             const review = await cursor.toArray();
             res.send(review);
         })
+        app.get('/email', async (req, res) => {
+            const cursor = emailCollection.find({});
+            const review = await cursor.toArray();
+            res.send(review);
+        })
+        app.get('/placeOrder', async (req, res) => {
+            const cursor = orderCollection.find({});
+            const review = await cursor.toArray();
+            res.send(review);
+        })
 
         // GET SINGLE Bike
 
@@ -120,6 +130,13 @@ async function run() {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await bikesCollection.deleteOne(query);
+            res.json(result);
+        })
+
+        app.delete('/placeOrder/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await orderCollection.deleteOne(query);
             res.json(result);
         })
 
