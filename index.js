@@ -59,6 +59,11 @@ async function run() {
             const review = await cursor.toArray();
             res.send(review);
         })
+        app.get('/users', async (req, res) => {
+            const cursor = usersCollection.find({});
+            const review = await cursor.toArray();
+            res.send(review);
+        })
 
         // GET SINGLE Bike
 
@@ -116,6 +121,21 @@ async function run() {
             }
             res.json({ admin: isAdmin });
         })
+
+
+
+        app.get('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const user = await usersCollection.findOne(query);
+            let isAdmin = false;
+            if (user?.role === 'admin') {
+                isAdmin = true;
+            }
+            res.json({ admin: isAdmin })
+        })
+
+
 
         app.post('/users', async (req, res) => {
             const user = req.body;
