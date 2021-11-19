@@ -59,6 +59,12 @@ async function run() {
             const review = await cursor.toArray();
             res.send(review);
         })
+        app.get('/placeOrder/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const cursor = await orderCollection.findOne({ query });
+            res.send(cursor);
+        })
         app.get('/users', async (req, res) => {
             const cursor = usersCollection.find({});
             const review = await cursor.toArray();
@@ -103,6 +109,13 @@ async function run() {
             res.json(result)
         })
         app.post('/placeOrder', async (req, res) => {
+            const placeOrder = req.body;
+            console.log('hit the api', placeOrder);
+            const result = await orderCollection.insertOne(placeOrder);
+            console.log(result);
+            res.json(result)
+        })
+        app.post('/placeOrder/:id', async (req, res) => {
             const placeOrder = req.body;
             console.log('hit the api', placeOrder);
             const result = await orderCollection.insertOne(placeOrder);
@@ -159,6 +172,24 @@ async function run() {
             const result = await orderCollection.deleteOne(query);
             res.json(result);
         })
+
+
+
+        //API status update Order
+        app.put('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatedStatus = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    status: updatedStatus.status
+                },
+            };
+            const result = await orderCollection.updateOne(filter, updateDoc, options);
+            res.json(result);
+        });
+
 
 
         app.put('/users', async (req, res) => {
